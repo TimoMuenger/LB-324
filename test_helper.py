@@ -162,3 +162,18 @@ def test_ist_ueberfaellig_ignoriert_erledigte(app):
 
     # When/Then: Sie gilt nicht als überfällig
     assert helper.ist_ueberfaellig(alt) is False
+
+
+def test_anzahl_offen_zaehlt_nur_unerledigte(app):
+    # Given: Drei offene und zwei erledigte Aufgaben
+    for nummer in range(3):
+        helper.add("Offen {}".format(nummer), "2026-11-10")
+    for nummer in range(2):
+        erledigt = helper.add("Fertig {}".format(nummer), "2026-11-11")
+        helper.update(erledigt.id)
+
+    # When: Ich die Anzahl offener Aufgaben abfrage
+    anzahl = helper.anzahl_offen()
+
+    # Then: Nur die offenen werden gezählt
+    assert anzahl == 3

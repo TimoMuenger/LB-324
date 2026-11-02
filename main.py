@@ -23,6 +23,7 @@ def index():
         eintraege=helper.get_offene() if nur_offene else helper.get_all(),
         kategorien=helper.KATEGORIEN,
         nur_offene=nur_offene,
+        anzahl_offen=helper.anzahl_offen(),
     )
 
 
