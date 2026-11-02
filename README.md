@@ -46,7 +46,7 @@ Datenbankserver.
 | :-- | :-- | :-- |
 | Lokal ohne `.env` | SQLite (`instance/modulplaner.db`) | keine nötig |
 | Lokal mit `.env` | PostgreSQL | `.env`, steht in der `.gitignore` |
-| Azure | PostgreSQL Flexible Server | Application Settings im Azure-Portal |
+| Azure | SQLite, siehe unten | keine nötig |
 
 `database.py` baut den connection string aus den vier Variablen `DBUSER`,
 `DBPASS`, `DBHOST` und `DBNAME`. Sind sie nicht gesetzt, fällt die
@@ -80,6 +80,34 @@ Die vorletzten zwei Zeilen sind wichtig: `trust` erlaubt lokal die Anmeldung
 ohne Passwort und darf nur für diese zwei Minuten gelten.
 
 Danach `.env.example` als `.env` kopieren und die vier Werte eintragen.
+
+### Warum auf Azure SQLite läuft und nicht PostgreSQL
+
+Die Applikation ist für beide Datenbanken gebaut, und lokal läuft sie auf
+PostgreSQL. Auf Azure nicht — aus einem Grund, den wir nicht beeinflussen
+können:
+
+Unser Abonnement ist **Azure for Students**. Es erlaubt nur eine kleine Zahl
+von Regionen; jeder Versuch in einer anderen scheitert mit
+`RequestDisallowedByAzure`. In der für uns erlaubten Region
+**Germany West Central** bietet Azure **PostgreSQL Flexible Server für dieses
+Abonnement nicht an** — das Portal meldet beim Anlegen:
+
+> PostgreSQL – Flexible Server is not available for your selection of
+> subscription and location
+
+Darum läuft auf Azure die SQLite-Variante. Die Weiche in `database.py` macht
+das ohne Codeänderung möglich: ohne gesetzte `DBUSER`-Variable nimmt die
+Applikation SQLite.
+
+**Was das bedeutet:** Die Datei liegt unter `/home/site/wwwroot/instance/`.
+Sie übersteht einen Neustart, wird aber bei jeder neuen Auslieferung
+überschrieben. Für den produktiven Betrieb wäre das untauglich; für den
+Nachweis des automatisierten Deploymentprozesses spielt es keine Rolle.
+
+Sobald ein Abonnement mit PostgreSQL zur Verfügung steht, genügt es, die vier
+Variablen `DBUSER`, `DBPASS`, `DBHOST` und `DBNAME` in den Application
+Settings einzutragen. Am Code ändert sich nichts.
 
 ### Warum die Testfälle nie PostgreSQL berühren
 
