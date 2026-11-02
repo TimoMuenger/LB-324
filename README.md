@@ -27,6 +27,11 @@ pip install pytest pytest-cov flake8 pre-commit
 pre-commit install
 pre-commit install -t commit-msg
 
+# Der Haken pytest-check laeuft im System-Python, nicht in der venv,
+# weil git-Haken ohne aktivierte venv starten. Darum dort dasselbe
+# nochmals installieren:
+# python -m pip install pytest Flask Flask-SQLAlchemy python-dotenv
+
 # Zugangsdaten vorbereiten (nur nötig für PostgreSQL)
 copy .env.example .env
 ```

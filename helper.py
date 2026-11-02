@@ -47,9 +47,7 @@ def get(eintrag_id):
 
 
 def get_nach_kategorie(kategorie):
-    return (
-        Eintrag.query.filter_by(kategorie=kategorie).order_by(Eintrag.termin).all()
-    )
+    return Eintrag.query.filter_by(kategorie=kategorie).order_by(Eintrag.termin).all()
 
 
 def update(eintrag_id):
