@@ -16,10 +16,12 @@ with app.app_context():
 
 @app.route("/")
 def index():
+    nur_offene = request.args.get("nur_offene") == "1"
     return render_template(
         "index.html",
-        eintraege=helper.get_all(),
+        eintraege=helper.get_offene() if nur_offene else helper.get_all(),
         kategorien=helper.KATEGORIEN,
+        nur_offene=nur_offene,
     )
 
 
