@@ -30,7 +30,13 @@
         </tr>
         {% for eintrag in eintraege %}
         <tr>
-            <td>{{ eintrag.titel }}</td>
+            <td>
+                <form action="/edit/{{ eintrag.id }}" method="post">
+                    <input type="text" name="titel" value="{{ eintrag.titel }}" required />
+                    <input type="date" name="termin" value="{{ eintrag.termin }}" />
+                    <button type="submit">speichern</button>
+                </form>
+            </td>
             <td>{{ eintrag.kategorie }}</td>
             <td>{{ eintrag.termin.strftime('%d.%m.%Y') }}</td>
             <td>

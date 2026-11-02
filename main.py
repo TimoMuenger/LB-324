@@ -45,6 +45,16 @@ def delete(eintrag_id):
     return redirect(url_for("index"))
 
 
+@app.route("/edit/<int:eintrag_id>", methods=["POST"])
+def edit(eintrag_id):
+    helper.bearbeiten(
+        eintrag_id,
+        request.form.get("titel"),
+        request.form.get("termin"),
+    )
+    return redirect(url_for("index"))
+
+
 @app.route("/download")
 def download():
     return Response(

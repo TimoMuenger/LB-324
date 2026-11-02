@@ -118,3 +118,16 @@ def test_loeschen_entfernt_eintrag(app):
     # Then: Nur die andere ist noch da
     titel = [eintrag.titel for eintrag in helper.get_all()]
     assert titel == ["Bleibt stehen"]
+
+
+def test_bearbeiten_aendert_titel_und_termin(app):
+    # Given: Eine erfasste Aufgabe
+    eintrag = helper.add("Alter Titel", "2026-11-10")
+
+    # When: Ich Titel und Termin ändere
+    helper.bearbeiten(eintrag.id, "Neuer Titel", "2026-12-01")
+
+    # Then: Der Eintrag trägt die neuen Werte
+    geaendert = helper.get(eintrag.id)
+    assert geaendert.titel == "Neuer Titel"
+    assert geaendert.termin == datetime.date(2026, 12, 1)

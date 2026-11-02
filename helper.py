@@ -63,6 +63,14 @@ def loeschen(eintrag_id):
     db.session.commit()
 
 
+def bearbeiten(eintrag_id, titel, termin):
+    eintrag = get(eintrag_id)
+    eintrag.titel = titel
+    eintrag.termin = parse_termin(termin)
+    db.session.commit()
+    return eintrag
+
+
 def get_csv():
     puffer = io.StringIO()
     schreiber = csv.writer(puffer)
