@@ -1,0 +1,28 @@
+# Geheimnisse - gehoeren nie in die Ablage
+.env
+
+# Datenbank-Dateien (SQLite legt sie unter instance/ ab)
+instance/
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# pytest / Testabdeckung
+.pytest_cache/
+.coverage
+htmlcov/
+
+# pyinstaller
+build/
+dist/
+*.spec
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

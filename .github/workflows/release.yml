@@ -1,0 +1,17 @@
+name: Release from tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  veroeffentlichen:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ghalactic/github-release-from-tag@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

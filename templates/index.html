@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Modulplaner</title>
+</head>
+
+<body>
+    <h1>Modulplaner</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="titel" placeholder="Was ist zu tun?" required />
+        <select name="kategorie">
+            {% for kategorie in kategorien %}
+            <option value="{{ kategorie }}">{{ kategorie }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="termin" />
+        <button type="submit">Hinzufügen</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Titel</th>
+            <th>Kategorie</th>
+            <th>Termin</th>
+            <th>Status</th>
+        </tr>
+        {% for eintrag in eintraege %}
+        <tr>
+            <td>{{ eintrag.titel }}</td>
+            <td>{{ eintrag.kategorie }}</td>
+            <td>{{ eintrag.termin.strftime('%d.%m.%Y') }}</td>
+            <td>
+                <a href="/update/{{ eintrag.id }}">
+                    {% if eintrag.erledigt %}erledigt{% else %}offen{% endif %}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="/download">Als CSV herunterladen</a></p>
+</body>
+
+</html>

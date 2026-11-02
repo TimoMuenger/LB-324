@@ -1,0 +1,28 @@
+name: Etikette bei Zuweisung entfernen
+
+on:
+  issues:
+    types:
+      - assigned
+
+jobs:
+  etikette-entfernen:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: "status: new issue"
+              })
+            } catch (fehler) {
+              if (fehler.status !== 404) {
+                throw fehler
+              }
+            }
