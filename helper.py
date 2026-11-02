@@ -57,6 +57,12 @@ def update(eintrag_id):
     return eintrag
 
 
+def loeschen(eintrag_id):
+    eintrag = get(eintrag_id)
+    db.session.delete(eintrag)
+    db.session.commit()
+
+
 def get_csv():
     puffer = io.StringIO()
     schreiber = csv.writer(puffer)

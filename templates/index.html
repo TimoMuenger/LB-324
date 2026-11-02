@@ -26,6 +26,7 @@
             <th>Kategorie</th>
             <th>Termin</th>
             <th>Status</th>
+            <th></th>
         </tr>
         {% for eintrag in eintraege %}
         <tr>
@@ -37,6 +38,7 @@
                     {% if eintrag.erledigt %}erledigt{% else %}offen{% endif %}
                 </a>
             </td>
+            <td><a href="/delete/{{ eintrag.id }}">löschen</a></td>
         </tr>
         {% endfor %}
     </table>

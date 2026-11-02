@@ -39,6 +39,12 @@ def update(eintrag_id):
     return redirect(url_for("index"))
 
 
+@app.route("/delete/<int:eintrag_id>")
+def delete(eintrag_id):
+    helper.loeschen(eintrag_id)
+    return redirect(url_for("index"))
+
+
 @app.route("/download")
 def download():
     return Response(

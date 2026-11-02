@@ -105,3 +105,16 @@ def test_get_csv_maskiert_komma_im_titel(app):
 
     # Then: Der Titel steht maskiert in Anführungszeichen
     assert '"Testen, dann einbuchen"' in csv_text
+
+
+def test_loeschen_entfernt_eintrag(app):
+    # Given: Zwei erfasste Aufgaben
+    helper.add("Bleibt stehen", "2026-11-20")
+    weg = helper.add("Soll weg", "2026-11-21")
+
+    # When: Ich eine davon lösche
+    helper.loeschen(weg.id)
+
+    # Then: Nur die andere ist noch da
+    titel = [eintrag.titel for eintrag in helper.get_all()]
+    assert titel == ["Bleibt stehen"]
