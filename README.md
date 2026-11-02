@@ -52,6 +52,41 @@ Datenbankserver.
 `DBPASS`, `DBHOST` und `DBNAME`. Sind sie nicht gesetzt, fällt die
 Applikation auf SQLite zurück. Passwörter stehen nie im Code.
 
+Welche Datenbank gerade aktiv ist, steht am Fuss der Startseite.
+
+### PostgreSQL lokal einrichten
+
+```powershell
+winget install PostgreSQL.PostgreSQL.17
+```
+
+Die Installation läuft unbeaufsichtigt durch und fragt kein Passwort ab. Es
+wird darum nachträglich gesetzt, in einer PowerShell als Administrator:
+
+```powershell
+$hba = "C:\Program Files\PostgreSQL\17\data\pg_hba.conf"
+Copy-Item $hba "$hba.backup"
+(Get-Content $hba) -replace 'scram-sha-256', 'trust' | Set-Content $hba
+Restart-Service postgresql-x64-17
+
+& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -c "ALTER USER postgres PASSWORD 'EUER-PASSWORT';"
+& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -c "CREATE DATABASE modulplaner;"
+
+Copy-Item "$hba.backup" $hba -Force
+Restart-Service postgresql-x64-17
+```
+
+Die vorletzten zwei Zeilen sind wichtig: `trust` erlaubt lokal die Anmeldung
+ohne Passwort und darf nur für diese zwei Minuten gelten.
+
+Danach `.env.example` als `.env` kopieren und die vier Werte eintragen.
+
+### Warum die Testfälle nie PostgreSQL berühren
+
+`conftest.py` setzt `DBUSER` auf leer, bevor pytest die Testmodule lädt.
+Ohne das würden die Testfälle gegen die echte Datenbank laufen, und das
+`drop_all()` in den fixtures würde bei jedem Testlauf alle Daten löschen.
+
 ## Testfälle
 
 ```powershell

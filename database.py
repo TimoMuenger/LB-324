@@ -14,3 +14,7 @@ def verbindungszeichenkette():
             dbname=os.environ["DBNAME"],
         )
     return "sqlite:///" + os.environ.get("DBFILE", "modulplaner.db")
+
+
+def datenbank_art():
+    return "PostgreSQL" if os.environ.get("DBUSER") else "SQLite"

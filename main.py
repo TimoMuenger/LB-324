@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from flask import Flask, Response, redirect, render_template, request, url_for
 
 import helper
-from database import db, verbindungszeichenkette
+from database import datenbank_art, db, verbindungszeichenkette
 
 load_dotenv()
 
@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = verbindungszeichenkette()
 db.init_app(app)
 app.jinja_env.globals["ist_ueberfaellig"] = helper.ist_ueberfaellig
+app.jinja_env.globals["datenbank_art"] = datenbank_art
 
 with app.app_context():
     db.create_all()
