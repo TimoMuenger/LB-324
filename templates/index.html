@@ -12,8 +12,8 @@
     <form action="/add" method="post">
       <input type="text" name="titel" placeholder="Was ist zu tun?" required />
       <select name="kategorie">
-        {% for kategorie in kategorien %}
-        <option value="{{ kategorie }}">{{ kategorie }}</option>
+        {% for eine_kategorie in kategorien %}
+        <option value="{{ eine_kategorie }}">{{ eine_kategorie }}</option>
         {% endfor %}
       </select>
       <input type="date" name="termin" />
@@ -25,6 +25,17 @@
     {% else %}
     <p><a href="/?nur_offene=1">nur offene anzeigen</a></p>
     {% endif %}
+
+    <p>
+        Kategorie:
+        {% for eine_kategorie in kategorien %}
+        <a href="/?kategorie={{ eine_kategorie }}">
+            {% if kategorie == eine_kategorie %}<strong>{{ eine_kategorie }}</strong>
+            {% else %}{{ eine_kategorie }}{% endif %}
+        </a>
+        {% endfor %}
+        <a href="/">alle</a>
+    </p>
 
     <table>
       <tr>

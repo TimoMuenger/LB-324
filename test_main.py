@@ -68,3 +68,17 @@ def test_download_liefert_csv_datei(client):
     assert antwort.mimetype == "text/csv"
     assert "attachment" in antwort.headers["Content-disposition"]
     assert "Export prüfen" in antwort.get_data(as_text=True)
+
+
+def test_startseite_filtert_nach_kategorie(client):
+    # Given: Aufgaben in zwei Kategorien
+    helper.add("Modulprüfung lernen", "2026-11-20", "Prüfung")
+    helper.add("LB abgeben", "2026-11-21", "Modul")
+
+    # When: Ich die Startseite mit einer Kategorie aufrufe
+    antwort = client.get("/?kategorie=Prüfung")
+
+    # Then: Nur die Aufgabe dieser Kategorie steht auf der Seite
+    seite = antwort.get_data(as_text=True)
+    assert "Modulprüfung lernen" in seite
+    assert "LB abgeben" not in seite

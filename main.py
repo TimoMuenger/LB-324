@@ -18,11 +18,21 @@ with app.app_context():
 @app.route("/")
 def index():
     nur_offene = request.args.get("nur_offene") == "1"
+    kategorie = request.args.get("kategorie")
+
+    if kategorie:
+        eintraege = helper.get_nach_kategorie(kategorie)
+    elif nur_offene:
+        eintraege = helper.get_offene()
+    else:
+        eintraege = helper.get_all()
+
     return render_template(
         "index.html",
-        eintraege=helper.get_offene() if nur_offene else helper.get_all(),
+        eintraege=eintraege,
         kategorien=helper.KATEGORIEN,
         nur_offene=nur_offene,
+        kategorie=kategorie,
         anzahl_offen=helper.anzahl_offen(),
     )
 
