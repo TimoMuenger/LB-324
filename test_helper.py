@@ -145,3 +145,20 @@ def test_get_offene_liefert_nur_unerledigte(app):
     # Then: Nur die offene kommt zurück
     titel = [eintrag.titel for eintrag in treffer]
     assert titel == ["Noch offen"]
+
+
+def test_ist_ueberfaellig_erkennt_vergangenen_termin(app):
+    # Given: Eine offene Aufgabe mit Termin in der Vergangenheit
+    alt = helper.add("Längst fällig", "2020-01-01")
+
+    # When/Then: Sie gilt als überfällig
+    assert helper.ist_ueberfaellig(alt) is True
+
+
+def test_ist_ueberfaellig_ignoriert_erledigte(app):
+    # Given: Eine erledigte Aufgabe mit Termin in der Vergangenheit
+    alt = helper.add("Längst erledigt", "2020-01-01")
+    helper.update(alt.id)
+
+    # When/Then: Sie gilt nicht als überfällig
+    assert helper.ist_ueberfaellig(alt) is False
