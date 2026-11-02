@@ -131,3 +131,17 @@ def test_bearbeiten_aendert_titel_und_termin(app):
     geaendert = helper.get(eintrag.id)
     assert geaendert.titel == "Neuer Titel"
     assert geaendert.termin == datetime.date(2026, 12, 1)
+
+
+def test_get_offene_liefert_nur_unerledigte(app):
+    # Given: Eine offene und eine erledigte Aufgabe
+    helper.add("Noch offen", "2026-11-10")
+    erledigt = helper.add("Schon fertig", "2026-11-11")
+    helper.update(erledigt.id)
+
+    # When: Ich nur die offenen abfrage
+    treffer = helper.get_offene()
+
+    # Then: Nur die offene kommt zurück
+    titel = [eintrag.titel for eintrag in treffer]
+    assert titel == ["Noch offen"]

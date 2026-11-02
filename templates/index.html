@@ -1,55 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Modulplaner</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Modulplaner</h1>
 
     <form action="/add" method="post">
-        <input type="text" name="titel" placeholder="Was ist zu tun?" required />
-        <select name="kategorie">
-            {% for kategorie in kategorien %}
-            <option value="{{ kategorie }}">{{ kategorie }}</option>
-            {% endfor %}
-        </select>
-        <input type="date" name="termin" />
-        <button type="submit">Hinzufügen</button>
+      <input type="text" name="titel" placeholder="Was ist zu tun?" required />
+      <select name="kategorie">
+        {% for kategorie in kategorien %}
+        <option value="{{ kategorie }}">{{ kategorie }}</option>
+        {% endfor %}
+      </select>
+      <input type="date" name="termin" />
+      <button type="submit">Hinzufügen</button>
     </form>
 
+    {% if nur_offene %}
+    <p><a href="/">alle anzeigen</a></p>
+    {% else %}
+    <p><a href="/?nur_offene=1">nur offene anzeigen</a></p>
+    {% endif %}
+
     <table>
-        <tr>
-            <th>Titel</th>
-            <th>Kategorie</th>
-            <th>Termin</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-        {% for eintrag in eintraege %}
-        <tr>
-            <td>
-                <form action="/edit/{{ eintrag.id }}" method="post">
-                    <input type="text" name="titel" value="{{ eintrag.titel }}" required />
-                    <input type="date" name="termin" value="{{ eintrag.termin }}" />
-                    <button type="submit">speichern</button>
-                </form>
-            </td>
-            <td>{{ eintrag.kategorie }}</td>
-            <td>{{ eintrag.termin.strftime('%d.%m.%Y') }}</td>
-            <td>
-                <a href="/update/{{ eintrag.id }}">
-                    {% if eintrag.erledigt %}erledigt{% else %}offen{% endif %}
-                </a>
-            </td>
-            <td><a href="/delete/{{ eintrag.id }}">löschen</a></td>
-        </tr>
-        {% endfor %}
+      <tr>
+        <th>Titel</th>
+        <th>Kategorie</th>
+        <th>Termin</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      {% for eintrag in eintraege %}
+      <tr>
+        <td>
+          <form action="/edit/{{ eintrag.id }}" method="post">
+            <input
+              type="text"
+              name="titel"
+              value="{{ eintrag.titel }}"
+              required
+            />
+            <input type="date" name="termin" value="{{ eintrag.termin }}" />
+            <button type="submit">speichern</button>
+          </form>
+        </td>
+        <td>{{ eintrag.kategorie }}</td>
+        <td>{{ eintrag.termin.strftime('%d.%m.%Y') }}</td>
+        <td>
+          <a href="/update/{{ eintrag.id }}">
+            {% if eintrag.erledigt %}erledigt{% else %}offen{% endif %}
+          </a>
+        </td>
+        <td><a href="/delete/{{ eintrag.id }}">löschen</a></td>
+      </tr>
+      {% endfor %}
     </table>
 
     <p><a href="/download">Als CSV herunterladen</a></p>
-</body>
-
+  </body>
 </html>
