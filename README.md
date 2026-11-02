@@ -12,8 +12,8 @@ Voraussetzungen: Python 3.11 oder neuer, git, Visual Studio Code, optional
 Docker Desktop und PostgreSQL mit pgAdmin.
 
 ```powershell
-git clone https://github.com/TimoMuenger/modulplaner.git
-cd modulplaner
+git clone https://github.com/TimoMuenger/LB-324.git
+cd LB-324
 
 # Virtuelle Umgebung: hält die Abhängigkeiten dieses Projekts getrennt
 # von anderen Projekten auf demselben Rechner.

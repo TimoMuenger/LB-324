@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-LABEL org.opencontainers.image.source=https://github.com/TimoMuenger/modulplaner
+LABEL org.opencontainers.image.source=https://github.com/TimoMuenger/LB-324
 
 WORKDIR /app
 
