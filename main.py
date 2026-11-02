@@ -9,6 +9,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = verbindungszeichenkette()
 db.init_app(app)
+app.jinja_env.globals["ist_ueberfaellig"] = helper.ist_ueberfaellig
 
 with app.app_context():
     db.create_all()

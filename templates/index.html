@@ -48,7 +48,10 @@
           </form>
         </td>
         <td>{{ eintrag.kategorie }}</td>
-        <td>{{ eintrag.termin.strftime('%d.%m.%Y') }}</td>
+        <td>
+          {{ eintrag.termin.strftime('%d.%m.%Y') }} {% if
+          ist_ueberfaellig(eintrag) %}<strong>überfällig</strong>{% endif %}
+        </td>
         <td>
           <a href="/update/{{ eintrag.id }}">
             {% if eintrag.erledigt %}erledigt{% else %}offen{% endif %}

@@ -46,6 +46,10 @@ def get_offene():
     return Eintrag.query.filter_by(erledigt=False).order_by(Eintrag.termin).all()
 
 
+def ist_ueberfaellig(eintrag):
+    return not eintrag.erledigt and eintrag.termin < datetime.date.today()
+
+
 def get(eintrag_id):
     return db.session.get(Eintrag, eintrag_id)
 
